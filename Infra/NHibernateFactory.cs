@@ -18,6 +18,7 @@ namespace MiniProfilerNhibernate5.Infra
         public ISessionFactory CreateSessionFactory()
         {
             return Fluently.Configure().Database(MsSqlConfiguration.MsSql2012.ConnectionString(ConnectionString)
+                        .Driver<MiniProfilerSql2008ClientDriver>()
 #if DEBUG
                         .ShowSql()
 #endif    

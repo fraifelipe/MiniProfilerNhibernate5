@@ -148,6 +148,7 @@
         <e p="WeatherForecastController.cs" t="Include" />
       </e>
       <e p="Infra" t="Include">
+        <e p="MiniProfilerSql2008ClientDriver.cs" t="Include" />
         <e p="NHibernateFactory.cs" t="Include" />
         <e p="UnitOfWork.cs" t="Include" />
       </e>

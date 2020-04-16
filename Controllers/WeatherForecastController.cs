@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MiniProfilerNhibernate5.Infra;
 using NHibernate;
+using StackExchange.Profiling;
 
 namespace MiniProfilerNhibernate5.Controllers
 {
@@ -30,6 +31,8 @@ namespace MiniProfilerNhibernate5.Controllers
         public IEnumerable<WeatherForecast> Get()
         {
             var query = _unitOfWork.GetSession().CreateSQLQuery("SELECT COUNT(*) FROM TodoCollection");
+            
+            // _unitOfWork.GetSession().= new StackExchange.Profiling.Data.ProfiledDbConnection(_unitOfWork.GetSession().Connection, MiniProfiler.Current);
 
             var count = query.UniqueResult<int>();
             

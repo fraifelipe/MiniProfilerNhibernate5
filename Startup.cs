@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -40,6 +39,7 @@ namespace MiniProfilerNhibernate5
             
             services.AddSingleton(x => new NHibernateFactory("Data Source=.;Initial Catalog=Todo;Integrated Security=SSPI;").CreateSessionFactory());
             services.AddScoped<IUnitOfWork, UnitOfWork>(x => new UnitOfWork(x.GetService<ISessionFactory>().OpenSession()));
+            // services.AddScoped<IUnitOfWork, UnitOfWork>(x => new UnitOfWork(x.GetService<ISessionFactory>().WithOptions().Connection(new StackExchange.Profiling.Data.ProfiledDbConnection(x.GetService<ISessionFactory>().OpenSession().Connection, MiniProfiler.Current)).OpenSession()));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
