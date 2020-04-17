@@ -1,4 +1,5 @@
-﻿using System;
+﻿﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using NHibernate;
 
@@ -7,6 +8,7 @@ namespace MiniProfilerNhibernate5.Infra
     public interface IUnitOfWork
     {
         void Save<TEntity>(TEntity entity) where TEntity : class;
+        void SaveMany<TEntity>(IEnumerable<TEntity> entities) where TEntity : class;
         void Update(object entity);
         void Delete(object entity);
         void Flush();
@@ -26,9 +28,18 @@ namespace MiniProfilerNhibernate5.Infra
 
         public void Save<TEntity>(TEntity entity) where TEntity : class
         {
-            _session.BeginTransaction();
-            _session.Save(entity);
-            _session.Transaction.Commit();
+        }
+
+        public void SaveMany<TEntity>(IEnumerable<TEntity> entities) where TEntity : class
+        {
+            // _session.BeginTransaction();
+            foreach (var entity in entities)
+            {
+                _session.Save(entity);
+ 
+            }
+            // _session.Transaction.Commit();
+            _session.Flush();
         }
 
         public void Update(object entity)

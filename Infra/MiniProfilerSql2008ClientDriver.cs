@@ -1,4 +1,4 @@
-﻿using System.Data.Common;
+﻿﻿using System.Data.Common;
 using NHibernate.Driver;
 using StackExchange.Profiling;
 using StackExchange.Profiling.Data;
@@ -9,17 +9,16 @@ namespace MiniProfilerNhibernate5.Infra
     {
         public override DbCommand CreateCommand()
         {
-            return (DbCommand) new ProfiledDbCommand(
-                base.CreateCommand(), 
-                null,
-                MiniProfiler.Current);
+            return MiniProfiler.Current != null 
+                ? new ProfiledDbCommand(base.CreateCommand(), null, MiniProfiler.Current) 
+                : base.CreateCommand();
         }
 
         public override DbConnection CreateConnection()
         {
-            return (DbConnection) new ProfiledDbConnection(
-                base.CreateConnection(), 
-                MiniProfiler.Current);
+            return MiniProfiler.Current != null 
+                ? new ProfiledDbConnection(base.CreateConnection(), MiniProfiler.Current) 
+                : base.CreateConnection();
         }
     }
 }

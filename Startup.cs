@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MiniProfilerNhibernate5.Infra;
 using NHibernate;
+using System.Data.SqlClient;
 
 namespace MiniProfilerNhibernate5
 {
@@ -30,7 +31,7 @@ namespace MiniProfilerNhibernate5
                 options.ShouldProfile = request => {
                     return !request.Path.Value.Contains("sockjs-node");
                 };
-            }).AddEntityFramework();
+            });
             
             services.AddMvc(options => options.EnableEndpointRouting = false);
             

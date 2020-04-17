@@ -1,7 +1,8 @@
-﻿using FluentNHibernate.Cfg;
+﻿﻿using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using FluentNHibernate.Conventions.Helpers;
 using NHibernate;
+using NHibernate.Cfg;
 using NHibernate.Tool.hbm2ddl;
 
 namespace MiniProfilerNhibernate5.Infra
@@ -21,19 +22,20 @@ namespace MiniProfilerNhibernate5.Infra
                         .Driver<MiniProfilerSql2008ClientDriver>()
 #if DEBUG
                         .ShowSql()
-#endif    
+#endif
                 )
 
                 .Mappings(m => m.FluentMappings
                     .AddFromAssemblyOf<Program>()
-                    .Conventions.Setup(c =>
-                    {
-                        c.Add(DefaultLazy.Never());
-                    }))
+                    .Conventions.Setup(c => { c.Add(DefaultLazy.Never()); }))
 
-                .ExposeConfiguration(cfg => new SchemaExport(cfg)
-                    .Execute(true, false,false))
-                .BuildSessionFactory();
+                .ExposeConfiguration(cfg =>
+                {
+                    cfg.SetProperty(Environment.BatchSize, "100");
+                    cfg.SetProperty(Environment.Hbm2ddlKeyWords,
+                        "none"); // https://groups.google.com/forum/#!topic/nhusers/F8IxCgYN038
+                    // new SchemaExport(cfg);
+                }).BuildSessionFactory();
         }
     }
 }
